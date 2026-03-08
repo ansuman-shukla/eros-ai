@@ -1,8 +1,8 @@
-# Companion AI
+# Eros AI
 
-Welcome to **Companion AI**! This is an open-source, deeply personal AI companion platform featuring persistent memory, an evolving personality engine, real-time emotional intelligence, and native voice and chat interaction capabilities.
+Welcome to **Eros AI**! This is an open-source, deeply personal AI companion platform featuring persistent memory, an evolving personality engine, real-time emotional intelligence, and native voice and chat interaction capabilities.
 
-Unlike generic chatbots, Companion AI is designed to maintain a long-term, evolving understanding of the user. It remembers your history, observes your habits, and incrementally builds a Carl Jung-inspired psychological profile of you over time. Interaction is seamless across **text chat** and **live voice calls**, both sharing the same underlying memory, personality, and session infrastructure.
+Unlike generic chatbots, Eros AI is designed to maintain a long-term, evolving understanding of the user. It remembers your history, observes your habits, and incrementally builds a Carl Jung-inspired psychological profile of you over time. Interaction is seamless across **text chat** and **live voice calls**, both sharing the same underlying memory, personality, and session infrastructure.
 
 ---
 
@@ -42,7 +42,7 @@ For a deeper dive, check out the [Platform & Code Architecture](./platform-archi
 
 ## 💻 Getting Started (Local Development)
 
-To run Companion AI locally, you'll need Docker installed.
+To run Eros AI locally, you'll need Docker installed.
 
 ### Prerequisites
 
