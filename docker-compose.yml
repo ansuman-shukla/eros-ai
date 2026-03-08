@@ -1,0 +1,36 @@
+services:
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - mongodb
+      - redis
+    restart: unless-stopped
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+  # voice-agent:
+  #   build: ./voice-agent
+  #   env_file:
+  #     - ./voice-agent/.env
+  #   depends_on:
+  #     - backend
+  #   restart: unless-stopped
+
+volumes:
+  mongo_data:

@@ -1,0 +1,36 @@
+# Core
+fastapi[standard]>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.0
+pydantic-settings>=2.0
+python-multipart>=0.0.9
+
+# Database
+beanie>=1.26
+motor>=3.5
+
+# Cache
+redis[hiredis]>=5.0
+
+# Background jobs
+arq>=0.26
+
+# Auth
+python-jose[cryptography]>=3.3
+passlib[bcrypt]>=1.7
+
+# HTTP client
+httpx>=0.27
+
+# AI / LLM
+google-genai>=1.0
+
+# LiveKit
+livekit-api>=0.7
+
+# Dev / Test
+pytest>=8.0
+pytest-asyncio>=0.24
+fakeredis[json]>=2.21
+mongomock-motor>=0.0.30
+pytest-mock>=3.14
