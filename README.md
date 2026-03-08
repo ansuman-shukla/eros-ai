@@ -1,6 +1,6 @@
 # Eros AI
 
-Welcome to **Eros AI**! This is an open-source, deeply personal AI companion platform featuring persistent memory, an evolving personality engine, real-time emotional intelligence, and native voice and chat interaction capabilities.
+**Eros AI**! This is an open-source, deeply personal AI companion platform featuring persistent memory, an evolving personality engine, real-time emotional intelligence, and native voice and chat interaction capabilities.
 
 Unlike generic chatbots, Eros AI is designed to maintain a long-term, evolving understanding of the user. It remembers your history, observes your habits, and incrementally builds a Carl Jung-inspired psychological profile of you over time. Interaction is seamless across **text chat** and **live voice calls**, both sharing the same underlying memory, personality, and session infrastructure.
 
