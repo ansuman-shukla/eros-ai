@@ -1,66 +1,144 @@
 # Companion AI
 
-> A deeply personal AI companion with persistent memory, evolving personality modeling, real-time emotional intelligence, and native voice + chat interaction.
+Welcome to **Companion AI**! This is an open-source, deeply personal AI companion platform featuring persistent memory, an evolving personality engine, real-time emotional intelligence, and native voice and chat interaction capabilities.
 
-## Overview
+Unlike generic chatbots, Companion AI is designed to maintain a long-term, evolving understanding of the user. It remembers your history, observes your habits, and incrementally builds a Carl Jung-inspired psychological profile of you over time. Interaction is seamless across **text chat** and **live voice calls**, both sharing the same underlying memory, personality, and session infrastructure.
 
-Unlike generic chatbots, **Companion AI** is designed to maintain a long-term, evolving understanding of the user. It remembers your history, observes your habits, and incrementally builds a Carl Jung-inspired psychological profile of you over time. Interaction is seamless across **text chat** and **live voice calls**, both of which share the same underlying memory, personality, and session infrastructure.
+---
 
-## Key Features
+## 🚀 Features
 
-*   **Persistent Memory System:**
-    *   **Hot Memory:** Core, high-frequency facts (name, age, key relationships) kept in Redis and always present in the system prompt.
-    *   **Cold Memory:** Episodic and contextual memories queried on demand using a Gemini-powered retrieval pipeline and cached in Redis.
-*   **Personality Engine (Trait Delta System):**
-    *   The companion builds a psychological profile based on Carl Jung's analytical psychology (Introversion/Extroversion, Sensing/Intuition, Thinking/Feeling).
-    *   Traits are updated incrementally after every session based on behavioral evidence (Trait Deltas).
-*   **Emotional Awareness:**
-    *   Uses **Prompt-Native Inference** to read emotional signals from the conversation dynamically and respond proportionally with appropriate tone, pacing, and warmth.
-*   **Native Voice Integration:**
-    *   Powered by LiveKit, Deepgram, and Cerebras.
-    *   Near-instant voice responses using a novel **Filler-Bridged Search** strategy: the agent speaks a natural filler phrase ("Let me think about that...") while querying memory in the background.
-*   **Automated Background Pipelines:**
-    *   Operates asynchronously after sessions end via ARQ workers.
-    *   **Memory Curation:** Extracts and reconciles new memories.
-    *   **Personality Update:** Computes trait deltas and evolves the user profile.
-    *   **Diary Writer:** Generates a daily, first-person reflective diary entry written *by* the companion *about* the user.
-*   **Gamification:**
-    *   A coin ledger system rewards users for interaction, allowing them to unlock features like the companion's hidden diary entries.
+*   **Persistent Memory System:** Hot memory (core facts) and Cold memory (episodic context) architecture.
+*   **Personality Engine:** Carl Jung-inspired psychological profiling incrementally updated via trait deltas.
+*   **Emotional Awareness:** Prompt-native mood inference for real-time adaptation of tone and behavior.
+*   **Native Voice Pipeline:** LiveKit WebRTC integration with near-instant responses using filler-bridged memory retrieval.
+*   **Background Pipelines:** Async worker jobs for memory curation, personality updates, and automated diary writing.
+*   **Gamification:** Coin-based engagement system to unlock companion features.
 
-## Tech Stack & Infrastructure
+---
+
+## 🛠 Tech Stack
 
 *   **Backend:** FastAPI (Python 3.12)
 *   **Frontend:** Next.js (React, TypeScript)
-*   **Database:** MongoDB (using Beanie ODM)
-*   **Cache & Session State:** Redis + ARQ (Background job queue)
-*   **Voice Pipeline:** LiveKit, Deepgram (STT/TTS), Cerebras (Fast LLM integration)
-*   **Intelligence & Ops:** Gemini SDK (Cold Memory Retrieval, Curation, Personality Updates, Diary Generation)
+*   **Database:** MongoDB (Beanie ODM)
+*   **Caching & Queue:** Redis for fast memory lookup and ARQ for background jobs.
+*   **Voice Integration:** LiveKit (WebRTC), Deepgram (STT/TTS), Cerebras (LLM).
+*   **Intelligence:** Gemini SDK (for memory retrieval, curation, and personality pipelines).
 
-## Architecture
+---
 
-The platform architecture distinctly separates the I/O layer (Chat vs. Voice) from a highly optimized **Shared Session Core**. 
+## 🏗 Architecture Overview
 
-1.  **Session Init:** All Hot and Cold memory is pulled from MongoDB entirely into Redis.
-2.  **During Session:** Zero database round-trips. A single "Decision Token" (SEARCH or NO_SEARCH) dictates if the agent responds directly or runs a sub-500ms Gemini retrieval step against Redis memory keys.
-3.  **Session End:** Redis states are flushed to MongoDB and async background jobs (curation, personality evolvement) are enqueued. 
+The platform uses a unified **Shared Session Core** for both chat and voice interactions:
 
-Refer to [`platform-architecture.md`](./platform-architecture.md) for detailed service maps and schemas.
+1.  **Session Initialization:** Pulls Hot and Cold memory from MongoDB into Redis.
+2.  **During Session:** Purely Redis-backed operations. The LLM emits a decision token (`SEARCH` or `NO_SEARCH`) to determine if a sub-500ms Gemini memory retrieval step is needed before responding.
+3.  **Session Teardown:** Redis states are flushed to MongoDB and async background jobs (curation, personality updates, diary generation) are enqueued via ARQ.
 
-## Implementation Roadmap
+For a deeper dive, check out the [Platform & Code Architecture](./platform-architecture.md) and the [Product Requirements Document (PRD)](./eros-prd.md).
 
-Development follows a strict Test-Driven Development (TDD) approach outlined in [`implementation-plan.md`](./implementation-plan.md), structured into 6 main phases:
+---
 
-*   **Phase 0:** Project Scaffolding & Infrastructure (FastAPI, Mongo, Redis, ARQ)
-*   **Phase 1:** Auth + User Foundation (JWT, Registration)
-*   **Phase 2:** Memory System + Session Lifecycle (Redis caching, Hot/Cold memory CRUD)
-*   **Phase 3:** Core Chat Pipeline (WebSockets, Decision Engine, Gemini Retrieval)
-*   **Phase 4:** Background Pipelines (ARQ tasks: Curation, Personality, Diary, Coins)
-*   **Phase 5:** Voice Pipeline (LiveKit Agent, Filler-Bridged Search, Deepgram integration)
-*   **Phase 6:** Dashboard API + Next.js Frontend
+## 💻 Getting Started (Local Development)
 
-## Documentation
+To run Companion AI locally, you'll need Docker installed.
 
-For a comprehensive dive into the product reasoning and architectural details, please review:
-*   [Product Requirements & Architecture (PRD)](./eros-prd.md)
-*   [Platform & Code Architecture](./platform-architecture.md)
-*   [Implementation Plan & Testing Strategy](./implementation-plan.md)
+### Prerequisites
+
+*   Python 3.12+
+*   Node.js 20+
+*   Docker & Docker Compose
+*   Required API Keys: Gemini, LiveKit, Deepgram, Cerebras
+
+### Setting up the Environment
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/ansuman-shukla/eros-ai.git
+    cd eros-ai
+    ```
+
+2.  **Configure environment variables:**
+    Copy the `.env.example` in the `backend/` directory to `.env` and fill in your API keys.
+    ```bash
+    cp backend/.env.example backend/.env
+    ```
+
+### Running the Services
+
+The easiest way to get the infrastructure (MongoDB, Redis) running is via Docker Compose:
+
+```bash
+docker-compose up -d
+```
+
+#### 1. Start the FastAPI Backend
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+#### 2. Start the Background ARQ Worker
+In a new terminal:
+```bash
+cd backend
+source venv/bin/activate
+python scripts/run_worker.py
+```
+
+#### 3. Start the Next.js Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+#### 4. (Optional) Start the LiveKit Voice Agent
+To enable voice capabilities:
+```bash
+cd voice-agent
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python agent.py start
+```
+
+---
+
+## 🧪 Running Tests
+
+The project follows a strict Test-Driven Development (TDD) approach. We use `pytest` with a dedicated MongoDB test database.
+
+```bash
+cd backend
+source venv/bin/activate
+pytest tests/
+```
+
+To run specific test suites:
+```bash
+pytest tests/unit/
+pytest tests/integration/
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these guidelines:
+
+1.  **Read the Documentation:** Familiarize yourself with the [Implementation Plan](./implementation-plan.md) and [Architecture](./platform-architecture.md). We build backend-first and ensure comprehensive test coverage before touching the UI.
+2.  **Test-Driven Development (TDD):** The core principle of this project is Red → Green → Refactor. Ensure your feature is fully covered by unit and integration tests *before* submitting a PR.
+3.  **Mock External APIs:** Do not make real calls to Gemini, Cerebras, or Deepgram in unit tests. Use mocks.
+4.  **Create a Branch:** `git checkout -b feature/your-feature-name`
+5.  **Commit and Push:** Write clear, descriptive commit messages. Provide a detailed PR description.
+
+---
+
+## 📜 License
+
+[Add License Information Here]
